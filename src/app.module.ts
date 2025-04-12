@@ -3,21 +3,26 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostModule } from './post/post.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import typeorm from './config/typeorm';
 
 @Module({
   imports: [
-    PostModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432', 10),
-      username: process.env.DB_USERNAME || 'test',
-      password: process.env.DB_PASSWORD || 'test',
-      database: process.env.DB_DATABASE || 'playground-nestjs',
-      autoLoadEntities: true, // 엔티티 파일(*.entity.ts) 자동 로드
-      synchronize: true, // 엔티티 파일 변경 시 테이블 자동 동기화
-      logging: false,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [typeorm],
+      envFilePath: '.env.local',
     }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        configService.get('typeorm')!,
+    }),
+    PostModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
