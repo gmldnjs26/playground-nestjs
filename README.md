@@ -4,6 +4,8 @@
 
 ### 2. 새로운 마이그레이션 생성
 
+마이그레이션 파일의 내용은 현재 엔티티를 보고 자동으로 생성해준다.
+
 ```bash
 npm run migration:generate --name=Migration_Name
 ```

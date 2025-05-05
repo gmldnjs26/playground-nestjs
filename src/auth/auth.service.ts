@@ -9,7 +9,7 @@ import { UsersService } from 'src/users/users.service';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import * as argon2 from 'argon2';
-import { User } from 'src/users/dto/user.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {

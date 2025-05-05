@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BucketList } from 'src/bucket-lists/entities/bucket-list.entity';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity({
   name: 'users',
@@ -10,9 +11,10 @@ export class User {
   @Column({
     type: 'varchar',
     length: 255,
-    nullable: false,
+    nullable: true,
+    default: '',
   })
-  name: string;
+  name?: string;
 
   @Column({
     type: 'varchar',
@@ -35,4 +37,7 @@ export class User {
     nullable: true,
   })
   refreshToken: string;
+
+  @OneToMany(() => BucketList, (bucketList) => bucketList.user)
+  bucketLists: BucketList[];
 }
