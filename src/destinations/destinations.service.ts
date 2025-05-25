@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateDestinationDto } from './dto/create-destination.dto';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Destination } from './entities/destination.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
@@ -43,5 +43,14 @@ export class DestinationsService {
     }
 
     await this.destinationRepository.delete(id);
+  }
+
+  async search(query: string): Promise<Destination[]> {
+    return this.destinationRepository.find({
+      where: [
+        { name: Like(`%${query}%`) },
+        { description: Like(`%${query}%`) },
+      ],
+    });
   }
 }

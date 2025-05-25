@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
 } from '@nestjs/common';
 import { DestinationsService } from './destinations.service';
 import { Destination } from './entities/destination.entity';
@@ -37,5 +38,10 @@ export class DestinationsController {
   @Delete(':id')
   async deleteDestination(@Param('id', ParseIntPipe) id: number) {
     await this.destinationsService.delete(id);
+  }
+
+  @Get('search')
+  async searchDestinations(@Query('q') query: string) {
+    return this.destinationsService.search(query);
   }
 }
